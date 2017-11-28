@@ -52,6 +52,29 @@ export default class Player extends Phaser.Sprite {
   }
 
   fire () {
-    
+    if (this.game.time.now > this.bulletGate) {
+      const bullet = this.bullets.getFirstDead()
+      if (bullet) {
+        bullet.x = this.x + this.fireposition.x
+        bullet.y = this.y + this.fireposition.y
+        bullet.revive()
+      } else {
+        bullet = this.bullets.create(this.x + this.fireposition.x, this.y + this.fireposition.y, 'bullet')
+        this.game.physics.enable(bullet, Phaser.Physics.ARCADE)
+        bullet.outOfBoundsKill = true
+        bullet.checkWorldBounds = true
+        bullet.body.velocity.x = 250
+      }
+      this.animations.play('fire')
+      this.bulletGate = this.game.time.now + 500
+    }
+  }
+
+  damage (amt) {
+    this.health.current -= amt
+  }
+
+  playFly () {
+    this.animations.play('fly', 14, true)
   }
 }
