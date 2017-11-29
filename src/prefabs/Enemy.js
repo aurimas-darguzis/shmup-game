@@ -1,6 +1,6 @@
 export default class Enemy extends Phaser.Sprite {
   constructor (game, x, y, bulletLayer, frame) {
-    super (game, x, y, 'enemy', frame)
+    super(game, x, y, 'enemy', frame)
 
     /**
      * initialize prefabs here
@@ -30,7 +30,7 @@ export default class Enemy extends Phaser.Sprite {
   }
 
   update () {
-    this.bounceTick += .02
+    this.bounceTick += 0.02
     this.y += Math.sin(this.bounceTick) * 1
   }
 }

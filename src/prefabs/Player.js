@@ -1,35 +1,31 @@
 export default class Player extends Phaser.Sprite {
-  
-  constructor () {
-    super (game, x, y, 'player', 0)
+  constructor (game, x, y, bullets) {
+    super(game, x, y, 'player', 0)
 
     this.game.physics.enable(this, Phaser.Physics.ARCADE)
     this.body.drag.x = 35
     this.body.drag.y = 35
     this.body.collideWorldBounds = true
-    
-    /**
-     * initialize prefab here
-     */
+
+    // initialize your prefab herea
     this.speed = 100
     this.bulletGate = 0
+    this.shotInterval = 500
     this.bullets = bullets
-    this.cursor = this.game.input.keyboard.createCursorKeys()
+    this.cursors = this.game.input.keyboard.createCursorKeys()
     this.fireButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
-    
+
     this.health = { current: 10, max: 10 }
     this.fireposition = { x: 160, y: 100 }
-    
-    this.animations.add('fly', [0,0,1,1,2,2,3,4,5,6,7,8,9,10,10])
-    this.fireAnimation = this.animations.add('fire', [11,12,13])
-    this.fireAnimation.onComplete.add(this, playFly, this)
+
+    this.animations.add('fly', [0, 0, 1, 1, 2, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10])
+    this.fireAnimation = this.animations.add('fire', [11, 12, 13])
+    this.fireAnimation.onComplete.add(this.playFly, this)
     this.animations.play('fly', 14, true)
   }
 
   update () {
-   /**
-    * write your prefab's specific update code here
-    */
+        // write your prefab's specific update code here
     if (this.cursors.left.isDown) {
       this.body.velocity.x = -this.speed
     }
@@ -53,7 +49,7 @@ export default class Player extends Phaser.Sprite {
 
   fire () {
     if (this.game.time.now > this.bulletGate) {
-      const bullet = this.bullets.getFirstDead()
+      var bullet = this.bullets.getFirstDead()
       if (bullet) {
         bullet.x = this.x + this.fireposition.x
         bullet.y = this.y + this.fireposition.y
@@ -65,8 +61,10 @@ export default class Player extends Phaser.Sprite {
         bullet.checkWorldBounds = true
         bullet.body.velocity.x = 250
       }
+
       this.animations.play('fire')
-      this.bulletGate = this.game.time.now + 500
+
+      this.bulletGate = this.game.time.now + this.shotInterval
     }
   }
 
@@ -77,4 +75,4 @@ export default class Player extends Phaser.Sprite {
   playFly () {
     this.animations.play('fly', 14, true)
   }
-}
+  }

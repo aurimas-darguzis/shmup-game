@@ -1,6 +1,6 @@
 export default class NumberBox extends Phaser.Group {
   constructor (game, bgasset, val, parent) {
-    super (game, parent)
+    super(game, parent)
     this.create(0, 0, bgasset)
 
     const style = {
@@ -13,7 +13,7 @@ export default class NumberBox extends Phaser.Group {
       this.game, 55, 55, val.toString(), style
     )
 
-    this.txtValue.anchor.setTo(.5, .5)
+    this.txtValue.anchor.setTo(0.5, 0.5)
     this.add(this.txtValue)
   }
 

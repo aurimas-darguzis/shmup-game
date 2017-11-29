@@ -1,5 +1,4 @@
 export default class StartScreen {
-  
   create () {}
 
   update () {
