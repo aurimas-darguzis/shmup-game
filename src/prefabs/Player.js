@@ -26,6 +26,9 @@ export default class Player extends Phaser.Sprite {
     this.cursors = this.game.input.keyboard.createCursorKeys()
     this.fireButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
 
+    /**
+     * set up players health
+     */
     this.health = { current: 10, max: 10 }
     this.fireposition = { x: 160, y: 100 }
 
@@ -120,6 +123,10 @@ export default class Player extends Phaser.Sprite {
     }
   }
 
+  /**
+   * On damage of player, take out amount
+   * @param {*} amt of health.
+   */
   damage (amt) {
     this.health.current -= amt
   }
