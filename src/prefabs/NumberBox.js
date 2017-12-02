@@ -17,6 +17,10 @@ export default class NumberBox extends Phaser.Group {
     this.add(this.txtValue)
   }
 
+  /**
+   * Update the text shown in this number box by
+   * @param {*} val passed into.
+   */
   setValue (val) {
     this.txtValue.text = val.toString()
   }
