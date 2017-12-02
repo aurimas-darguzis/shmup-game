@@ -1,18 +1,15 @@
-import Phaser from 'phaser'
-import { centerGameObjects } from '../utils'
+/**
+ * Here are the assets for the game.
+ * For this game only images and sprite sheets will be loaded,
+ * but if you want to use souds, tilemaps, other sorts of extra data,
+ * then this is the place where you would put them.
+ */
 
+import Phaser from 'phaser'
 export default class extends Phaser.State {
   init () {}
 
   preload () {
-    // this.loaderBg = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBg')
-    // this.loaderBar = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBar')
-    // centerGameObjects([this.loaderBg, this.loaderBar])
-
-    // this.load.setPreloadSprite(this.loaderBar)
-    //
-    // load your assets
-    //
     this.load.image('mushroom', 'assets/images/mushroom2.png')
 
     this.load.image('enemy', 'assets/images/enemy.png')
