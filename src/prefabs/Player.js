@@ -1,14 +1,21 @@
 export default class Player extends Phaser.Sprite {
   constructor (game, x, y, bullets) {
     super(game, x, y, 'player', 0)
-
+    
+    /**
+     * The motion of the player is a combination
+     * of the drag and speed. The drag, set in the
+     * constructor, is the amount of force that pushes
+     * work against a sprite's body when it moves
+     * via velocity.
+     */
+    this.speed = 100
     this.game.physics.enable(this, Phaser.Physics.ARCADE)
     this.body.drag.x = 35
     this.body.drag.y = 35
-    this.body.collideWorldBounds = true
 
-    // initialize your prefab herea
-    this.speed = 100
+
+    this.body.collideWorldBounds = true
     this.bulletGate = 0
     this.shotInterval = 500
     this.bullets = bullets
@@ -24,8 +31,21 @@ export default class Player extends Phaser.Sprite {
     this.animations.play('fly', 14, true)
   }
 
+  /**
+   * When arrow keys are held down, a force is applied to the player,
+   * overriding the majority of the drag, but not all of it. The drag
+   * will continue to pull back on the player, meaning that even if the
+   * speed is set to 100, the drag will pull back on the player when it
+   * is moving, so it never actually hit a speed of 100.
+
+   * Increasing the drag will affect the maximum speed the player can reach
+   * and how quickly the player will slow at a stop. Larger drags mean lower
+   * max speed and faster topping times. Changing the speed property in the
+   * constructor will affect how quickly player moves in general.
+   * Raising the speed of an object, if you want it to stop at about the same
+   * rate as it was before, raise the drag an equal percentage.
+   */
   update () {
-        // write your prefab's specific update code here
     if (this.cursors.left.isDown) {
       this.body.velocity.x = -this.speed
     }
