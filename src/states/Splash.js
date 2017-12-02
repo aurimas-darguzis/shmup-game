@@ -10,8 +10,6 @@ export default class extends Phaser.State {
   init () {}
 
   preload () {
-    this.load.image('mushroom', 'assets/images/mushroom2.png')
-
     this.load.image('enemy', 'assets/images/enemy.png')
     this.load.image('explosion', 'assets/images/explosion.png')
     this.load.spritesheet('player', 'assets/images/gunbot.png', 214, 269)
