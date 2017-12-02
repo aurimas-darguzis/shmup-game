@@ -13,9 +13,13 @@ export default class Player extends Phaser.Sprite {
     this.game.physics.enable(this, Phaser.Physics.ARCADE)
     this.body.drag.x = 35
     this.body.drag.y = 35
-
-
     this.body.collideWorldBounds = true
+
+    /**
+     * Firing-specific code.
+     * bulletsGate stores the next time a shot is allowed
+     * shotInterval is milliseconds between shots
+     */
     this.bulletGate = 0
     this.shotInterval = 500
     this.bullets = bullets
@@ -62,19 +66,42 @@ export default class Player extends Phaser.Sprite {
       this.body.velocity.y = this.speed
     }
 
+    /**
+     * Check every frame to see if the fire button is down.
+     */
     if (this.fireButton.isDown) {
       this.fire()
     }
   }
 
+  /**
+   * First check that enough time has elapsed between the last shot and
+   * the current frame for a new shot to be generated. This is based on the
+   * bullet gate. If the time is greater than this number - a new bullet is
+   * being generated, and, at the end of the `if` statement, the gate is updated
+   * to an amount of time in the future, as specified by the shot interval.
+   */
   fire () {
     if (this.game.time.now > this.bulletGate) {
+      /**
+       * Checks if a 'dead' bullet already exists. If it does, then that means that the bullet
+       * is already set up with a velocity and everything it needs, and it simply needs to be
+       * repositioned and brought back to life.
+       */
       var bullet = this.bullets.getFirstDead()
       if (bullet) {
         bullet.x = this.x + this.fireposition.x
         bullet.y = this.y + this.fireposition.y
         bullet.revive()
       } else {
+        /**
+         * If a bullet is not available already, a new one is generated and added to the bullet layer.
+         * The bullet is enabled for physics, si it can collide against other things and be affected by velocity.
+         * Its velocity is set to a positive value making it move right nonstop beacuse it has no drag
+         * Additionally, the bullet is set to kill itself once it flies off the screen, setting itself to 'dead'
+         * and readying it for reuse later on in the game (it will be returned by the getFirstDead method when a new
+         * shot needs to be generated).
+         */
         bullet = this.bullets.create(this.x + this.fireposition.x, this.y + this.fireposition.y, 'bullet')
         this.game.physics.enable(bullet, Phaser.Physics.ARCADE)
         bullet.outOfBoundsKill = true
@@ -82,6 +109,11 @@ export default class Player extends Phaser.Sprite {
         bullet.body.velocity.x = 250
       }
 
+      /**
+       * Play shooting animation. It is a quick animatio, and another animation needs to play once that animation is complete.
+       * In order to accomplish this, the animation has an event that was attached to it in the crate method that will run the
+       * 'playFly' method when the firing animation completes.
+       */
       this.animations.play('fire')
 
       this.bulletGate = this.game.time.now + this.shotInterval
@@ -92,7 +124,13 @@ export default class Player extends Phaser.Sprite {
     this.health.current -= amt
   }
 
+  /**
+   * When used as the onComplete handler of the fire animation, it will bring the player back to default, 'flying' state when the
+   * shooting is over. It is actually a small detail and is barely noticeable if the player is just holding down the 'shoot' button for the duration
+   * of the game because the shooting animation takes up most of the interval inbetween shots. If this method is not here, however, the flying animation
+   * would never been seen after the start of the game.
+   */
   playFly () {
     this.animations.play('fly', 14, true)
   }
-  }
+}
